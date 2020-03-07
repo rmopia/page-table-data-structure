@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1583382967 source:c:\cppprojects\a04\main.cpp
+1583541056 source:c:\cppprojects\a04\main.cpp
 	<iostream>
 	<unistd.h>
 	<ctype.h>
@@ -7,13 +7,17 @@
 	<sstream>
 	"structures.h"
 
-1583383357 source:c:\cppprojects\a04\structures.cpp
+1583562200 source:c:\cppprojects\a04\structures.cpp
 	<iostream>
 	<math.h>
 	<string>
+	<sstream>
 	<iomanip>
+	<utility>
 	"structures.h"
 
-1583381584 c:\cppprojects\a04\structures.h
+1583560102 c:\cppprojects\a04\structures.h
 	<string>
+	<iostream>
+	<utility>
 

@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-n 4001 trace_file 8 7 4" />
+				<Option parameters="-n 4001 trace.sample.tr 8 8 8" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>

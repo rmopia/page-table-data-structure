@@ -5,8 +5,11 @@
 #include <string>
 #include <sstream>
 #include "structures.h"
+#include "byutr.h"
 
 using namespace std;
+
+int frame = 0; // used when in map
 
 int main(int argc, char **argv){
     int Option;
@@ -32,20 +35,28 @@ int main(int argc, char **argv){
     }
     /* first mandatory argument, optind is defined by getopt */
     /* run while loop to obtain remaining arguments */
-    int idx = optind;
+    int opt_idx = optind;
     int levels = 0;
 
     int level_bits[5];
     int index = 0;
+    char *filename;
 
-    while(argv[idx] != nullptr){
-        if(isdigit(*argv[idx])){
-            level_bits[index] = atoi(argv[idx]);
+    while(argv[opt_idx] != nullptr){
+        if(isdigit(*argv[opt_idx])){
+            level_bits[index] = atoi(argv[opt_idx]);
             index++;
             levels++;
         }
-        idx++;
+        else{
+            filename = argv[opt_idx];
+        }
+        opt_idx++;
     }
+
+    cout << filename << endl;
+    FILE *pfile;
+    pfile = fopen(filename, "r");
 
     size_t n = sizeof(level_bits)/sizeof(level_bits[0]);
 
@@ -55,28 +66,28 @@ int main(int argc, char **argv){
         }
 	}
 
-    //cout << levels << endl;
-
     // pagetable used by levels as a center of information
     Pagetable *pt = new Pagetable(levels, level_bits);
 
     Level *level_zero = new Level(pt, 0, pt->EntryCount[0]);
 
+    pt->RootNodePtr = level_zero;
 
-    //cout << level_zero->PageTablePtr->LevelCount << endl;
-    //cout << level_zero->CurrentDepth << endl;
+    string hex_thang = "0xFEFFFEC2";
+    unsigned int dec_thang = HexToDec(hex_thang);
 
+    PageInsert(pt, dec_thang, frame);
+
+    PageLookUp(pt, dec_thang);
+
+/*
     string example_hex = "0x3c654321";
     string example_mask = "0x0FC00000";
 
     unsigned int dec, dec_mask;
-    stringstream ss, ss2;
-    ss << hex << example_hex;
-    ss >> dec;
-
-    ss2 << hex << example_mask;
-    ss2 >> dec_mask;
+    dec = HexToDec(example_hex);
+    dec_mask = HexToDec(example_mask);
 
     cout << LogicalToPage(dec, dec_mask, 22) << endl;
-
+*/
 }

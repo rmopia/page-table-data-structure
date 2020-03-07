@@ -1,10 +1,12 @@
 /* Name: Robert Mopia
 RedID: 817646343 */
 #include <string>
+#include <iostream>
+#include <utility>
 #ifndef PAGETABLE_HEADER
 #define PAGETABLE_HEADER
 
-
+class Level;
 class Pagetable{
     public:
         Pagetable(int level_count, int arguments[]);
@@ -12,19 +14,23 @@ class Pagetable{
         std::string *BitmaskAry;
         int *ShiftAry;
         int *EntryCount;
+        Level *RootNodePtr;
 };
 
 class Map{
     public:
-        Map(int entry_amount);
+        Map();
+        std::pair <bool, int> FrameIndex;
 };
 
 class Level{
     public:
+        Level();
         Level(Pagetable*, int current_depth, int array_size);
         Pagetable *PageTablePtr;
         int CurrentDepth;
-        Level *nextLevel[256];
+        Level *NextLevelPtr;
+        Level *NextLevel;
         Map *MapPtr;
 };
 
@@ -35,5 +41,6 @@ void PageInsert(Pagetable *ptable, unsigned int LogicalAddress, unsigned int Fra
 
 Map *PageLookUp(Pagetable *ptable, unsigned int LogicalAddress);
 
+unsigned int HexToDec(std::string hex_num);
 
 #endif // PAGETABLE_HEADER
