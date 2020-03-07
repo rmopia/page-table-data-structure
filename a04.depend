@@ -1,13 +1,14 @@
 # depslib dependency file v1.0
-1583541056 source:c:\cppprojects\a04\main.cpp
+1583618993 source:c:\cppprojects\a04\main.cpp
 	<iostream>
 	<unistd.h>
 	<ctype.h>
 	<string>
 	<sstream>
 	"structures.h"
+	"byu_tracereader.c"
 
-1583562200 source:c:\cppprojects\a04\structures.cpp
+1583618993 source:c:\cppprojects\a04\structures.cpp
 	<iostream>
 	<math.h>
 	<string>
@@ -16,8 +17,15 @@
 	<utility>
 	"structures.h"
 
-1583560102 c:\cppprojects\a04\structures.h
+1583619298 c:\cppprojects\a04\structures.h
 	<string>
 	<iostream>
 	<utility>
+
+1583294700 c:\cppprojects\a04\byu_tracereader.c
+	<stdio.h>
+	"byutr.h"
+
+1583294700 c:\cppprojects\a04\byutr.h
+	<stdint.h>
 

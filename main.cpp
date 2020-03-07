@@ -5,32 +5,34 @@
 #include <string>
 #include <sstream>
 #include "structures.h"
-#include "byutr.h"
+#include "level.h"
+//#include "byutr.h"
+#include "byu_tracereader.c"
 
 using namespace std;
 
 int frame = 0; // used when in map
 
 int main(int argc, char **argv){
-    int Option;
-    int value;
+    int Option, addr_num;
+    bool p_bool, t_bool = 0;
+    char *res_filename;
 
     while ( (Option = getopt(argc, argv, "n:p:t")) != -1) {
         switch (Option) {
         case 'n': /* Number of addresses to process */
-            value = atoi(optarg);
-        // optarg will contain the string following -n
-        // Process appropriately (e.g. convert to integer atoi(optarg))
+            addr_num = atoi(optarg);
         break;
         case 'p': /* produce map of pages */
-        // optarg contains name of page file…
+            res_filename = optarg;
+            p_bool = 1;
         break;
         case 't': /* Show address translation */
-        // No argument this time, just set a flag
+            t_bool = 1;
         break;
         default:
-        // print something about the usage and die…
-        exit(BADFLAG); // BADFLAG is an error # defined in a header
+            cout << "invalid argument found." << endl;
+            exit(BADFLAG); // BADFLAG is an error # defined in a header
         }
     }
     /* first mandatory argument, optind is defined by getopt */
@@ -54,40 +56,30 @@ int main(int argc, char **argv){
         opt_idx++;
     }
 
-    cout << filename << endl;
-    FILE *pfile;
-    pfile = fopen(filename, "r");
-
-    size_t n = sizeof(level_bits)/sizeof(level_bits[0]);
-
-	for (size_t i = 0; i < levels; i++) {
-        if(level_bits[i] != 0){
-            cout << level_bits[i] << endl;
-        }
-	}
-
     // pagetable used by levels as a center of information
     Pagetable *pt = new Pagetable(levels, level_bits);
-
     Level *level_zero = new Level(pt, 0, pt->EntryCount[0]);
-
     pt->RootNodePtr = level_zero;
 
-    string hex_thang = "0xFEFFFEC2";
-    unsigned int dec_thang = HexToDec(hex_thang);
+    FILE *trfile;
+    trfile = fopen(filename, "r");
+    p2AddrTr *addrPtr = (p2AddrTr*)malloc(sizeof(p2AddrTr));
 
-    PageInsert(pt, dec_thang, frame);
+    while(NextAddress(trfile, addrPtr) != 0){
+        cout << addrPtr->addr << endl;
+        PageInsert(pt, addrPtr->addr, frame);
+        frame++;
+    }
 
-    PageLookUp(pt, dec_thang);
+    fclose(trfile);
 
-/*
-    string example_hex = "0x3c654321";
-    string example_mask = "0x0FC00000";
+    unsigned int h = HexToDec("0xFEFFFEC2");
 
-    unsigned int dec, dec_mask;
-    dec = HexToDec(example_hex);
-    dec_mask = HexToDec(example_mask);
+    PageInsert(pt, h, frame);
 
-    cout << LogicalToPage(dec, dec_mask, 22) << endl;
-*/
+    Map *mp = new Map();
+
+    mp = PageLookUp(pt, h);
+
+    return 0;
 }
