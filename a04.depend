@@ -1,26 +1,30 @@
 # depslib dependency file v1.0
-1583618993 source:c:\cppprojects\a04\main.cpp
+1583632965 source:c:\cppprojects\a04\main.cpp
 	<iostream>
 	<unistd.h>
 	<ctype.h>
 	<string>
 	<sstream>
-	"structures.h"
+	"pagetable.h"
+	"level.h"
+	"map.h"
 	"byu_tracereader.c"
 
-1583618993 source:c:\cppprojects\a04\structures.cpp
+1583641189 source:c:\cppprojects\a04\structures.cpp
 	<iostream>
 	<math.h>
 	<string>
 	<sstream>
 	<iomanip>
 	<utility>
-	"structures.h"
+	"pagetable.h"
+	"level.h"
+	"map.h"
 
-1583619298 c:\cppprojects\a04\structures.h
+1583619731 c:\cppprojects\a04\structures.h
 	<string>
-	<iostream>
-	<utility>
+	"level.h"
+	"map.h"
 
 1583294700 c:\cppprojects\a04\byu_tracereader.c
 	<stdio.h>
@@ -28,4 +32,29 @@
 
 1583294700 c:\cppprojects\a04\byutr.h
 	<stdint.h>
+
+1583641296 c:\cppprojects\a04\level.h
+	"pagetable.h"
+
+1583641296 c:\cppprojects\a04\map.h
+	<iostream>
+	<utility>
+
+1583638629 c:\cppprojects\a04\pagetable.h
+	<string>
+	"level.h"
+	"map.h"
+
+1583630645 source:c:\cppprojects\a04\miscfunc.cpp
+
+1583630535 c:\cppprojects\a04\miscfunc.cpp
+	<iostream>
+	<math.h>
+	<string>
+	<sstream>
+	<iomanip>
+	<utility>
+	"pagetable.h"
+	"level.h"
+	"map.h"
 
