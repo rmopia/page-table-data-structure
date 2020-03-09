@@ -9,6 +9,8 @@ edoras id: misc0252 */
 #include <sstream>
 #include <vector>
 #include <cmath>
+#include <fstream>
+#include <bits/stdc++.h>
 #include "pagetable.h"
 #include "level.h"
 #include "map.h"
@@ -94,11 +96,27 @@ int main(int argc, char **argv){
     /* set file ptr and address array ptr for trace file */
     FILE *trfile;
     p2AddrTr *addrPtr = (p2AddrTr*)malloc(sizeof(p2AddrTr));
+    int adr_counter = 0;
+    /* vector used to store addresses for possible later use */
+    vector<unsigned int> addrs;
     if(trfile = fopen(filename, "r")){
-        /* reads values in trace file that are inserted into page table */
-        while(NextAddress(trfile, addrPtr) != 0){
-            if(PageInsert(pt, addrPtr->addr, frame) != false){
-                frame++;
+        if(addr_limit != 0){
+            /* only processes specific amount of addresses */
+            while(NextAddress(trfile, addrPtr) && adr_counter < addr_limit){
+                addrs.push_back(addrPtr->addr);
+                if(PageInsert(pt, addrPtr->addr, frame) != false){
+                    frame++;
+                }
+                adr_counter++;
+            }
+        }
+        else{
+            /* reads values in trace file that are inserted into page table */
+            while(NextAddress(trfile, addrPtr) != 0){
+                addrs.push_back(addrPtr->addr);
+                if(PageInsert(pt, addrPtr->addr, frame) != false){
+                    frame++;
+                }
             }
         }
         fclose(trfile);
@@ -136,15 +154,24 @@ int main(int argc, char **argv){
             while(NextAddress(filePtr, aPtr)){
                 Map *mpPtr = new Map();
                 mpPtr = PageLookUp(pt, aPtr->addr);
-                LogicalToPhysical(aPtr->addr, offset_bitmask, mpPtr->frame, page_size);
+                LogicalToPhysical
+                    (aPtr->addr, offset_bitmask, mpPtr->frame, page_size);
             }
         }
         fclose(filePtr);
     }
     /* write to specified file with ordered hex addresses and their frames */
     if(p_bool == 1){
-        // do something w/ res file
+        /* sort vector so pages are in order */
+        sort(addrs.begin(), addrs.end());
+        /* rather than file ptrs we use ofstream to output hex strings */
+        ofstream writeFile(res_filename);
+        for(int i = 0; i < addrs.size(); i++){
+            Map *mpPtr = new Map();
+            mpPtr = PageLookUp(pt, addrs[i]);
+            writeFile << DecToHex(addrs[i]) << " -> " << DecToHex(mpPtr->frame) << "\n";
+        }
+        writeFile.close();
     }
-
     return 0;
 }
