@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-n 4001 trace.sample.tr 8 8 8" />
+				<Option parameters="-t trace.sample.tr 8 8 8" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -33,7 +33,14 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="level.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="map.h" />
+		<Unit filename="miscfunc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="miscfunc.cpp" />
+		<Unit filename="pagetable.h" />
 		<Unit filename="structures.cpp" />
 		<Unit filename="structures.h" />
 		<Extensions>

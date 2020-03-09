@@ -30,6 +30,9 @@ bool PageInsert(Pagetable *ptable, unsigned int LogicalAddress, unsigned int Fra
 /* recursive function that validates logical address and returns map ptr */
 Map *PageLookUp(Pagetable *ptable, unsigned int LogicalAddress);
 
+/* convert int dec to hex string */
+std::string DecToHex(unsigned int dec_num);
+
 /* converts hex string to decimal int */
 unsigned int HexToDec(std::string hex_num);
 

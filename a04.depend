@@ -1,16 +1,17 @@
 # depslib dependency file v1.0
-1583632965 source:c:\cppprojects\a04\main.cpp
+1583722782 source:c:\cppprojects\a04\main.cpp
 	<iostream>
 	<unistd.h>
 	<ctype.h>
 	<string>
 	<sstream>
+	<cmath>
 	"pagetable.h"
 	"level.h"
 	"map.h"
 	"byu_tracereader.c"
 
-1583641189 source:c:\cppprojects\a04\structures.cpp
+1583723251 source:c:\cppprojects\a04\structures.cpp
 	<iostream>
 	<math.h>
 	<string>
@@ -26,26 +27,26 @@
 	"level.h"
 	"map.h"
 
-1583294700 c:\cppprojects\a04\byu_tracereader.c
+1583298300 c:\cppprojects\a04\byu_tracereader.c
 	<stdio.h>
 	"byutr.h"
 
-1583294700 c:\cppprojects\a04\byutr.h
+1583298300 c:\cppprojects\a04\byutr.h
 	<stdint.h>
 
-1583641296 c:\cppprojects\a04\level.h
+1583644896 c:\cppprojects\a04\level.h
 	"pagetable.h"
 
-1583641296 c:\cppprojects\a04\map.h
+1583644896 c:\cppprojects\a04\map.h
 	<iostream>
 	<utility>
 
-1583638629 c:\cppprojects\a04\pagetable.h
+1583721234 c:\cppprojects\a04\pagetable.h
 	<string>
 	"level.h"
 	"map.h"
 
-1583630645 source:c:\cppprojects\a04\miscfunc.cpp
+1583723251 source:c:\cppprojects\a04\miscfunc.cpp
 
 1583630535 c:\cppprojects\a04\miscfunc.cpp
 	<iostream>

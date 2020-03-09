@@ -11,6 +11,17 @@ RedID: 817646343 */
 #include "map.h"
 using namespace std;
 
+/* convert int dec to hex string */
+string DecToHex(unsigned int dec_num){
+    string hex_str = "0x";
+    string res;
+    stringstream ss;
+    ss << hex << dec_num;
+    res = ss.str();
+    hex_str.append(res);
+    return hex_str;
+}
+
 /* convert hex string to dec */
 unsigned int HexToDec(string hex_num){
     unsigned int dec_num;
@@ -47,11 +58,6 @@ string BinToHex(string bin_num){
 	return hex_str;
 }
 
-
-unsigned int findOffset(unsigned int LogicalAddress){
-
-}
-
 /* Pagetable constructor */
 Pagetable::Pagetable(int level_count, int level_bits[]){
     this->LevelCount = level_count;
@@ -77,7 +83,6 @@ Pagetable::Pagetable(int level_count, int level_bits[]){
         /* str binary converted to hex binary */
         /* stored in bitmask string array */
         this->BitmaskAry[i] = BinToHex(str_bit_mask);
-        cout << this->BitmaskAry[i] << endl;
     }
 
     int bit_amount = 32;
