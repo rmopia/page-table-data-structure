@@ -1,5 +1,3 @@
-/* Name: Robert Mopia
-RedID: 817646343 */
 #include <iostream>
 #include <math.h>
 #include <string>
@@ -19,6 +17,8 @@ Pagetable::Pagetable(int level_count, int level_bits[]){
     this->BitmaskAry = new string[level_count];
     this->ShiftAry = new int[level_count];
     this->EntryCount = new int[level_count];
+    /* records size of pagetable currently */
+    this->StructureSize = sizeof(Pagetable);
 
     int bit_start = 0;
     for(int i = 0; i < level_count; i++){
@@ -103,8 +103,8 @@ bool PageInsert(Level *curr_level, unsigned int LogicalAddress,
     /* find current array index by finding the page number */
     unsigned int shift_amount =
         curr_level->PageTablePtr->ShiftAry[curr_level->CurrentDepth];
-    unsigned int bit_mask =
-        HexToDec(curr_level->PageTablePtr->BitmaskAry[curr_level->CurrentDepth]);
+    unsigned int bit_mask = HexToDec
+        (curr_level->PageTablePtr->BitmaskAry[curr_level->CurrentDepth]);
     unsigned int page_num =
         LogicalToPage(LogicalAddress, bit_mask, shift_amount);
 
@@ -118,7 +118,6 @@ bool PageInsert(Level *curr_level, unsigned int LogicalAddress,
         }
         /* if there is a frame already stored, we return false */
         else{
-            //cout << "already has frame: " << curr_level->MapPtr[page_num].FrameIndex.second << endl;
             return false;
         }
     }
@@ -127,10 +126,10 @@ bool PageInsert(Level *curr_level, unsigned int LogicalAddress,
         /* checks if next level is empty, if so, create next level and link */
         if(curr_level->NextLevelPtr[page_num].NextLevel == nullptr){
             unsigned int nextLevelDepth = curr_level->CurrentDepth + 1;
-            unsigned int nextLevelSize =
-                curr_level->PageTablePtr->EntryCount[curr_level->CurrentDepth+1];
-            Level *new_level =
-                new Level(curr_level->PageTablePtr, nextLevelDepth, nextLevelSize);
+            unsigned int nextLevelSize = curr_level->
+                PageTablePtr->EntryCount[curr_level->CurrentDepth + 1];
+            Level *new_level = new Level
+                (curr_level->PageTablePtr, nextLevelDepth, nextLevelSize);
             curr_level->NextLevelPtr[page_num].NextLevel = new_level;
             return PageInsert(new_level, LogicalAddress, Frame);
         }

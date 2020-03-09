@@ -1,5 +1,3 @@
-/* Name: Robert Mopia
-RedID: 817646343 */
 #include <string>
 #include "level.h"
 #include "map.h"
@@ -10,6 +8,9 @@ class Level;
 class Pagetable{
     public:
         Pagetable(int level_count, int bits_per_level[]);
+        /* where total size of pagetable is stored */
+        int StructureSize;
+        /* total amount of levels to be constructed */
         int LevelCount;
         /* array of hex string bitmasks */
         std::string *BitmaskAry;
@@ -23,7 +24,8 @@ class Pagetable{
 
 
 /* recursive function that creates pages and stores frame */
-bool PageInsert(Pagetable *ptable, unsigned int LogicalAddress, unsigned int Frame);
+bool PageInsert(Pagetable *ptable,
+                unsigned int LogicalAddress, unsigned int Frame);
 
 /* recursive function that validates logical address and returns map ptr */
 Map *PageLookUp(Pagetable *ptable, unsigned int LogicalAddress);

@@ -5,7 +5,8 @@
 using namespace std;
 
 /* find page number function */
-unsigned int LogicalToPage(unsigned int LogicalAddress, unsigned int Mask, unsigned int Shift){
+unsigned int LogicalToPage(unsigned int LogicalAddress,
+                           unsigned int Mask, unsigned int Shift){
     unsigned int bitwise_and_res;
     /* bitwise and to remove unnecessary bits */
     bitwise_and_res = LogicalAddress & Mask;

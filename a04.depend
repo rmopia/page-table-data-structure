@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
-1583732206 source:c:\cppprojects\a04\main.cpp
+1583745800 source:c:\cppprojects\a04\main.cpp
 	<iostream>
 	<unistd.h>
 	<ctype.h>
 	<string>
 	<sstream>
+	<vector>
 	<cmath>
 	"pagetable.h"
 	"level.h"
@@ -12,7 +13,7 @@
 	"conversions.h"
 	"byu_tracereader.c"
 
-1583732265 source:c:\cppprojects\a04\structures.cpp
+1583744187 source:c:\cppprojects\a04\structures.cpp
 	<iostream>
 	<math.h>
 	<string>
@@ -39,10 +40,10 @@
 1583732461 c:\cppprojects\a04\level.h
 	"pagetable.h"
 
-1583732391 c:\cppprojects\a04\map.h
+1583743930 c:\cppprojects\a04\map.h
 	<utility>
 
-1583732206 c:\cppprojects\a04\pagetable.h
+1583743699 c:\cppprojects\a04\pagetable.h
 	<string>
 	"level.h"
 	"map.h"
@@ -63,15 +64,15 @@
 1583732022 source:c:\cppprojects\a04\map.cpp
 	"map.h"
 
-1583731864 source:c:\cppprojects\a04\level.cpp
+1583743930 source:c:\cppprojects\a04\level.cpp
 	<utility>
 	"level.h"
 	"map.h"
 
-1583732206 source:c:\cppprojects\a04\conversions.cpp
+1583743930 source:c:\cppprojects\a04\conversions.cpp
 	<sstream>
 	<string>
 	"conversions.h"
 
-1583732206 c:\cppprojects\a04\conversions.h
+1583743929 c:\cppprojects\a04\conversions.h
 

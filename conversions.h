@@ -2,7 +2,8 @@
 #define CONVERSIONS
 
 /* Logical address to page # converter */
-unsigned int LogicalToPage(unsigned int LogicalAddress, unsigned int Mask, unsigned int Shift);
+unsigned int LogicalToPage(unsigned int LogicalAddress,
+                           unsigned int Mask, unsigned int Shift);
 
 /* convert int dec to hex string */
 std::string DecToHex(unsigned int dec_num);

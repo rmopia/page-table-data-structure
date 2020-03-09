@@ -35,8 +35,10 @@
 		</Compiler>
 		<Unit filename="conversions.cpp" />
 		<Unit filename="conversions.h" />
+		<Unit filename="level.cpp" />
 		<Unit filename="level.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="map.cpp" />
 		<Unit filename="map.h" />
 		<Unit filename="miscfunc.c">
 			<Option compilerVar="CC" />
