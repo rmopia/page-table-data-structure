@@ -7,56 +7,10 @@ RedID: 817646343 */
 #include <iomanip>
 #include <utility>
 #include "pagetable.h"
+#include "conversions.h"
 #include "level.h"
 #include "map.h"
 using namespace std;
-
-/* convert int dec to hex string */
-string DecToHex(unsigned int dec_num){
-    string hex_str = "0x";
-    string res;
-    stringstream ss;
-    ss << hex << dec_num;
-    res = ss.str();
-    hex_str.append(res);
-    return hex_str;
-}
-
-/* convert hex string to dec */
-unsigned int HexToDec(string hex_num){
-    unsigned int dec_num;
-    stringstream ss;
-    ss << hex << hex_num;
-    ss >> dec_num;
-    return dec_num;
-}
-
-/* converts binary string to hex string */
-string BinToHex(string bin_num){
-    string hex_str = "0x";
-    string byte;
-    /* reads every 4 bits of binary and converts it to hex */
-	for (int i = 0; i < bin_num.length(); i += 4){
-		byte = bin_num.substr(i, 4);
-		if (byte.compare("0000")==0){ hex_str += "0"; }
-		else if (byte.compare("0001")==0){ hex_str += "1"; }
-		else if (byte.compare("0010")==0){ hex_str += "2"; }
-		else if (byte.compare("0011")==0){ hex_str += "3"; }
-		else if (byte.compare("0100")==0){ hex_str += "4"; }
-		else if (byte.compare("0101")==0){ hex_str += "5"; }
-		else if (byte.compare("0110")==0){ hex_str += "6"; }
-		else if (byte.compare("0111")==0){ hex_str += "7"; }
-		else if (byte.compare("1000")==0){ hex_str += "8"; }
-		else if (byte.compare("1001")==0){ hex_str += "9"; }
-		else if (byte.compare("1010")==0){ hex_str += "A"; }
-		else if (byte.compare("1011")==0){ hex_str += "B"; }
-		else if (byte.compare("1100")==0){ hex_str += "C"; }
-		else if (byte.compare("1101")==0){ hex_str += "D"; }
-		else if (byte.compare("1110")==0){ hex_str += "E"; }
-		else if (byte.compare("1111")==0){ hex_str += "F"; }
-	}
-	return hex_str;
-}
 
 /* Pagetable constructor */
 Pagetable::Pagetable(int level_count, int level_bits[]){
@@ -96,53 +50,6 @@ Pagetable::Pagetable(int level_count, int level_bits[]){
     for(int i = 0; i < level_count; i++){
         this->EntryCount[i] = pow(2, level_bits[i]);
     }
-}
-
-/* Map object constructor with no arguments */
-Map::Map(){}
-
-/* Map object constructor with arguments */
-Map::Map(bool bit, int fr){
-    this->bit = bit;
-    this->frame = fr;
-    /* frame index pair */
-    this->FrameIndex.first = bit;
-    this->FrameIndex.second = fr;
-}
-
-/* Level object constructor with no arguments */
-Level::Level(){}
-
-/* Level object constructor with arguments */
-Level::Level(Pagetable *ptable, int current_depth, int array_size){
-    /* link level back to pagetable to find core info */
-    this->PageTablePtr = ptable;
-    this->CurrentDepth = current_depth;
-
-    /* creates 2^n next level array of nullptrs if not a leaf node */
-    if((current_depth + 1) < this->PageTablePtr->LevelCount){
-        NextLevelPtr = new Level[array_size];
-        for(int i = 0; i < array_size; i++){
-            NextLevelPtr[i].NextLevel = nullptr;
-        }
-    }
-    /* creates 2^n map array of empty pairs if leaf node */
-    else{
-        MapPtr = new Map[array_size];
-        for(int i = 0; i < array_size; i++){
-            MapPtr[i].FrameIndex = make_pair(0,0);
-        }
-    }
-}
-
-/* find page number function */
-unsigned int LogicalToPage(unsigned int LogicalAddress, unsigned int Mask, unsigned int Shift){
-    unsigned int bitwise_and_res;
-    /* bitwise and to remove unnecessary bits */
-    bitwise_and_res = LogicalAddress & Mask;
-    /* bitwise shift to remove trailing zeros */
-    unsigned int bitwise_shift_res = bitwise_and_res >> Shift;
-    return bitwise_shift_res;
 }
 
 /* page traversal */

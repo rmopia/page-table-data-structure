@@ -1,15 +1,18 @@
 /* Name: Robert Mopia
-RedID: 817646343 */
+RedID: 817646343
+edoras id: misc0252 */
 #define BADFLAG 1
 #include <iostream>
 #include <unistd.h>
 #include <ctype.h>
 #include <string>
 #include <sstream>
+#include <vector>
 #include <cmath>
 #include "pagetable.h"
 #include "level.h"
 #include "map.h"
+#include "conversions.h"
 #include "byu_tracereader.c"
 
 using namespace std;
@@ -22,16 +25,25 @@ int main(int argc, char **argv){
     bool p_bool = 0, t_bool = 0;
     char *res_filename;
 
-    while ( (Option = getopt(argc, argv, "n:p:t")) != -1) {
+    while((Option = getopt(argc, argv, "n:p:t")) != -1){
         switch (Option) {
         case 'n': /* Number of addresses to process */
             addr_limit = atoi(optarg);
         break;
         case 'p': /* produce map of pages */
             res_filename = optarg;
-            p_bool = 1;
+            FILE *fPtr;
+            /* if file does not exist then we exit */
+            if(fPtr = fopen(res_filename, "r")){
+                fclose();
+                p_bool = 1;
+            }
+            else{
+                exit(BADFLAG);
+            }
         break;
         case 't': /* Show address translation */
+            /* address translation done after page insertions */
             t_bool = 1;
         break;
         default:

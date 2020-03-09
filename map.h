@@ -1,7 +1,6 @@
+#include <utility>
 #ifndef MAP_HEADER
 #define MAP_HEADER
-#include <iostream>
-#include <utility>
 
 class Map{
     public:
