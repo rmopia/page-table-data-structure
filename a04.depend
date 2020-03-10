@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1583781163 source:c:\cppprojects\a04\main.cpp
+1583875258 source:c:\cppprojects\a04\main.cpp
 	<iostream>
 	<unistd.h>
 	<ctype.h>
@@ -7,13 +7,15 @@
 	<sstream>
 	<vector>
 	<cmath>
+	<fstream>
+	<bits/stdc++.h>
 	"pagetable.h"
 	"level.h"
 	"map.h"
 	"conversions.h"
 	"byu_tracereader.c"
 
-1583744187 source:c:\cppprojects\a04\structures.cpp
+1583814539 source:c:\cppprojects\a04\structures.cpp
 	<iostream>
 	<math.h>
 	<string>
@@ -40,7 +42,7 @@
 1583732461 c:\cppprojects\a04\level.h
 	"pagetable.h"
 
-1583743930 c:\cppprojects\a04\map.h
+1583882791 c:\cppprojects\a04\map.h
 	<utility>
 
 1583743699 c:\cppprojects\a04\pagetable.h
@@ -64,7 +66,7 @@
 1583732022 source:c:\cppprojects\a04\map.cpp
 	"map.h"
 
-1583743930 source:c:\cppprojects\a04\level.cpp
+1583814590 source:c:\cppprojects\a04\level.cpp
 	<utility>
 	"level.h"
 	"map.h"

@@ -13,6 +13,8 @@ class Map{
         int frame;
         /* pair index that stores validity bit and frame number */
         std::pair <bool, int> FrameIndex;
+        /* specific index the page ends up at */
+        unsigned int page_index;
 };
 
 #endif

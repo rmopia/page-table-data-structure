@@ -151,7 +151,8 @@ int main(int argc, char **argv){
                 /* map object used to find addresses frame */
                 Map *mpPtr = new Map();
                 mpPtr = PageLookUp(pt, aPtr->addr);
-                LogicalToPhysical(aPtr->addr, offset_bitmask, mpPtr->frame, page_size);
+                LogicalToPhysical(aPtr->addr,
+                                  offset_bitmask, mpPtr->frame, page_size);
                 addr_counter++;
             }
         }
@@ -174,7 +175,8 @@ int main(int argc, char **argv){
         for(int i = 0; i < addrs.size(); i++){
             Map *mpPtr = new Map();
             mpPtr = PageLookUp(pt, addrs[i]);
-            writeFile << DecToHex(addrs[i]) << " -> " << DecToHex(mpPtr->frame) << "\n";
+            writeFile << DecToHex(mpPtr->page_index) << " -> "
+                << DecToHex(mpPtr->frame) << "\n";
         }
         writeFile.close();
     }

@@ -85,6 +85,7 @@ Map *PageLookUp(Level *curr_level, unsigned int LogicalAddress){
             bool bit = curr_level->MapPtr[page_num].FrameIndex.first;
             int frame = curr_level->MapPtr[page_num].FrameIndex.second;
             Map *mp = new Map(bit, frame);
+            mp->page_index = page_num;
 
             return mp;
         }
@@ -144,6 +145,7 @@ bool PageInsert(Level *curr_level, unsigned int LogicalAddress,
 }
 
 /* beginning of page insert function */
-bool PageInsert(Pagetable *ptable, unsigned int LogicalAddress, unsigned int Frame){
+bool PageInsert(Pagetable *ptable,
+                unsigned int LogicalAddress, unsigned int Frame){
     return PageInsert(ptable->RootNodePtr, LogicalAddress, Frame);
 }
