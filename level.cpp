@@ -16,7 +16,7 @@ Level::Level(Pagetable *ptable, int current_depth, int array_size){
     /* creates 2^n next level array of nullptrs if not a leaf node */
     if((current_depth + 1) < this->PageTablePtr->LevelCount){
         NextLevelPtr = new Level[array_size];
-        /* array of pointers size is added to total struct size */
+        /* size of array of pointers added to total struct size */
         this->PageTablePtr->StructureSize += (array_size)*sizeof(Level*);
         for(int i = 0; i < array_size; i++){
             NextLevelPtr[i].NextLevel = nullptr;

@@ -46,7 +46,7 @@ Pagetable::Pagetable(int level_count, int level_bits[]){
         this->ShiftAry[i] = bit_amount;
     }
 
-    /* finds 2^n page sizes based on command line args */
+    /* find and store 2^n page sizes based on command line args */
     for(int i = 0; i < level_count; i++){
         this->EntryCount[i] = pow(2, level_bits[i]);
     }
@@ -108,9 +108,10 @@ bool PageInsert(Level *curr_level, unsigned int LogicalAddress,
     unsigned int page_num =
         LogicalToPage(LogicalAddress, bit_mask, shift_amount);
 
+    /* is leaf node so we process map structure here */
     if(curr_level->PageTablePtr->LevelCount == curr_level->CurrentDepth+1){
-        /* is leaf node so we process map structure here */
         /* if no frame stored, we add pair of values */
+        /* pair of values include bool valid bit and int frame */
         if(curr_level->MapPtr[page_num].FrameIndex.first == false){
             curr_level->MapPtr[page_num].FrameIndex.first = true;
             curr_level->MapPtr[page_num].FrameIndex.second = Frame;
@@ -121,8 +122,8 @@ bool PageInsert(Level *curr_level, unsigned int LogicalAddress,
             return false;
         }
     }
+    /* is not leaf node so we continue to create/move to next level */
     else{
-        /* is not leaf node so we continue to create/move to next level */
         /* checks if next level is empty, if so, create next level and link */
         if(curr_level->NextLevelPtr[page_num].NextLevel == nullptr){
             unsigned int nextLevelDepth = curr_level->CurrentDepth + 1;

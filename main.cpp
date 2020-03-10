@@ -21,7 +21,8 @@ using namespace std;
 
 int frame = 0; /* global var stored in map, used for translation */
 
-void LogicalToPhysical(unsigned int addr, int offset_mask, int frame, int page_size){
+void LogicalToPhysical(unsigned int addr,
+                       int offset_mask, int frame, int page_size){
     cout << DecToHex(addr) << " -> ";
     /* offset obtained from logical addr and num of bits of offset */
     int offset = addr & offset_mask;
@@ -34,6 +35,7 @@ int main(int argc, char **argv){
     /* command line vars used after page initialization & insertion*/
     int Option, addr_limit = 0;
     bool p_bool = 0, t_bool = 0;
+    /* char ptr stores filename we want to write to */
     char *res_filename;
 
     while((Option = getopt(argc, argv, "n:p:t")) != -1){
@@ -74,6 +76,7 @@ int main(int argc, char **argv){
 
     /* run while loop to obtain remaining arguments */
     while(argv[opt_idx] != nullptr){
+        /* if is a number then add to an array */
         if(isdigit(*argv[opt_idx])){
             page_num_bits += atoi(argv[opt_idx]);
             level_bits[level_idx] = atoi(argv[opt_idx]);
@@ -81,6 +84,7 @@ int main(int argc, char **argv){
             levels++;
         }
         else{
+            /* if not digit, we assume optarg is a trace file */
             filename = argv[opt_idx];
         }
         opt_idx++;
@@ -90,7 +94,7 @@ int main(int argc, char **argv){
     /* pagetable initialized with root node level */
     Pagetable *pt = new Pagetable(levels, level_bits);
     Level *level_zero = new Level(pt, 0, pt->EntryCount[0]);
-    /* link pagetable to level with pointer */
+    /* link pagetable to initial level with pointer */
     pt->RootNodePtr = level_zero;
 
     /* set file ptr and address array ptr for trace file */
@@ -104,6 +108,7 @@ int main(int argc, char **argv){
             /* only processes specific amount of addresses */
             while(NextAddress(trfile, addrPtr) && adr_counter < addr_limit){
                 addrs.push_back(addrPtr->addr);
+                /* if the current frame is added we iterate it */
                 if(PageInsert(pt, addrPtr->addr, frame) != false){
                     frame++;
                 }
@@ -143,7 +148,7 @@ int main(int argc, char **argv){
         if(addr_limit != 0){
             /* only processes addr_counter amount of addresses */
             while(NextAddress(filePtr, aPtr) && addr_counter < addr_limit){
-                /* map object used to find frame */
+                /* map object used to find addresses frame */
                 Map *mpPtr = new Map();
                 mpPtr = PageLookUp(pt, aPtr->addr);
                 LogicalToPhysical(aPtr->addr, offset_bitmask, mpPtr->frame, page_size);
