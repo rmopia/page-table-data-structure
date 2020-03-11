@@ -7,7 +7,6 @@ edoras id: misc0252 */
 #include <ctype.h>
 #include <string>
 #include <sstream>
-#include <vector>
 #include <cmath>
 #include <fstream>
 #include <bits/stdc++.h>
@@ -19,17 +18,32 @@ edoras id: misc0252 */
 
 using namespace std;
 
-int frame = 0; /* global var stored in map, used for translation */
-
-void LogicalToPhysical(unsigned int addr,
-                       int offset_mask, int frame, int page_size){
-    cout << DecToHex(addr) << " -> ";
-    /* offset obtained from logical addr and num of bits of offset */
-    int offset = addr & offset_mask;
-    /* virtual addr converted to physical addr */
-    int result = (frame)*(page_size) + offset;
-    cout << DecToHex(result) << endl;
+void PageTableTraversal(Level *lvl, ofstream& writeFile){
+    /* is at leaf node, so we look at map pointer */
+    if(lvl->CurrentDepth+1 == lvl->PageTablePtr->LevelCount){
+        for(int i = 0; i < lvl->PageTablePtr->
+            EntryCount[lvl->CurrentDepth]; i++){
+            if(lvl->MapPtr[i].FrameIndex.first != 0){
+                writeFile << DecToHex(i) << " -> " <<
+                    DecToHex(lvl->MapPtr[i].FrameIndex.second) << '\n';
+            }
+        }
+    }
+    /* not at leaf node, so we recurse when we find a ptr */
+    else{
+        for(int i = 0; i < lvl->PageTablePtr->EntryCount[lvl->CurrentDepth]; i++){
+            if(lvl->NextLevelPtr[i].NextLevel != nullptr){
+                PageTableTraversal(lvl->NextLevelPtr[i].NextLevel, writeFile);
+            }
+        }
+    }
 }
+
+void PageTableTraversal(Pagetable *pt, ofstream& writeFile){
+    PageTableTraversal(pt->RootNodePtr, writeFile);
+}
+
+int frame = 0; /* global var stored in map, used for translation */
 
 int main(int argc, char **argv){
     /* command line vars used after page initialization & insertion*/
@@ -47,7 +61,7 @@ int main(int argc, char **argv){
             res_filename = optarg;
             FILE *fPtr;
             /* if file does not exist then we exit */
-            if(fPtr = fopen(res_filename, "r")){
+            if((fPtr = fopen(res_filename, "r"))){
                 fclose(fPtr);
                 p_bool = 1;
             }
@@ -71,7 +85,8 @@ int main(int argc, char **argv){
     char *filename;
     /* vars used to store misc. command line arguments */
     int levels = 0, page_num_bits = 0;
-    int level_bits[5];
+    /* size of level bits determined by total args - optind - 1 for trfile */
+    int level_bits[argc - optind - 1];
     int level_idx = 0;
 
     /* run while loop to obtain remaining arguments */
@@ -101,13 +116,12 @@ int main(int argc, char **argv){
     FILE *trfile;
     p2AddrTr *addrPtr = (p2AddrTr*)malloc(sizeof(p2AddrTr));
     int adr_counter = 0;
-    /* vector used to store addresses for possible later use */
-    vector<unsigned int> addrs;
-    if(trfile = fopen(filename, "r")){
+
+    /* read through trace file if exists */
+    if((trfile = fopen(filename, "r"))){
         if(addr_limit != 0){
             /* only processes specific amount of addresses */
             while(NextAddress(trfile, addrPtr) && adr_counter < addr_limit){
-                addrs.push_back(addrPtr->addr);
                 /* if the current frame is added we iterate it */
                 if(PageInsert(pt, addrPtr->addr, frame) != false){
                     frame++;
@@ -118,7 +132,6 @@ int main(int argc, char **argv){
         else{
             /* reads values in trace file that are inserted into page table */
             while(NextAddress(trfile, addrPtr) != 0){
-                addrs.push_back(addrPtr->addr);
                 if(PageInsert(pt, addrPtr->addr, frame) != false){
                     frame++;
                 }
@@ -140,44 +153,36 @@ int main(int argc, char **argv){
 
     /* logical to physical address translation flag */
     if(t_bool == 1){
-        FILE *filePtr;
-        /* reopens and rereads original file */
-        filePtr = fopen(filename, "r");
+        /* reopens and rereads original file with original ptr */
+        trfile = fopen(filename, "r");
         p2AddrTr *aPtr = (p2AddrTr*)malloc(sizeof(p2AddrTr));
         int addr_counter = 0;
         if(addr_limit != 0){
             /* only processes addr_counter amount of addresses */
-            while(NextAddress(filePtr, aPtr) && addr_counter < addr_limit){
+            while(NextAddress(trfile, aPtr) && addr_counter < addr_limit){
                 /* map object used to find addresses frame */
                 Map *mpPtr = new Map();
                 mpPtr = PageLookUp(pt, aPtr->addr);
-                LogicalToPhysical(aPtr->addr,
-                                  offset_bitmask, mpPtr->frame, page_size);
+                LogicalToPhysicalAddr(aPtr->addr, offset_bitmask,
+                                      mpPtr->frame, page_size);
                 addr_counter++;
             }
         }
         else{
-            while(NextAddress(filePtr, aPtr)){
+            while(NextAddress(trfile, aPtr)){
                 Map *mpPtr = new Map();
                 mpPtr = PageLookUp(pt, aPtr->addr);
-                LogicalToPhysical
-                    (aPtr->addr, offset_bitmask, mpPtr->frame, page_size);
+                LogicalToPhysicalAddr(aPtr->addr, offset_bitmask,
+                                      mpPtr->frame, page_size);
             }
         }
-        fclose(filePtr);
+        fclose(trfile);
     }
     /* write to specified file with ordered hex addresses and their frames */
     if(p_bool == 1){
-        /* sort vector so pages are in order */
-        sort(addrs.begin(), addrs.end());
         /* rather than file ptrs we use ofstream to output hex strings */
         ofstream writeFile(res_filename);
-        for(int i = 0; i < addrs.size(); i++){
-            Map *mpPtr = new Map();
-            mpPtr = PageLookUp(pt, addrs[i]);
-            writeFile << DecToHex(mpPtr->page_index) << " -> "
-                << DecToHex(mpPtr->frame) << "\n";
-        }
+        PageTableTraversal(pt, writeFile);
         writeFile.close();
     }
     return 0;

@@ -1,11 +1,10 @@
 # depslib dependency file v1.0
-1583875258 source:c:\cppprojects\a04\main.cpp
+1583902813 source:c:\cppprojects\a04\main.cpp
 	<iostream>
 	<unistd.h>
 	<ctype.h>
 	<string>
 	<sstream>
-	<vector>
 	<cmath>
 	<fstream>
 	<bits/stdc++.h>
@@ -15,7 +14,7 @@
 	"conversions.h"
 	"byu_tracereader.c"
 
-1583814539 source:c:\cppprojects\a04\structures.cpp
+1583882989 source:c:\cppprojects\a04\structures.cpp
 	<iostream>
 	<math.h>
 	<string>
@@ -71,10 +70,13 @@
 	"level.h"
 	"map.h"
 
-1583743930 source:c:\cppprojects\a04\conversions.cpp
+1583903426 source:c:\cppprojects\a04\conversions.cpp
 	<sstream>
 	<string>
+	<iomanip>
+	<iostream>
+	<fstream>
 	"conversions.h"
 
-1583743929 c:\cppprojects\a04\conversions.h
+1583902536 c:\cppprojects\a04\conversions.h
 
