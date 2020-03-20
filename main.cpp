@@ -50,6 +50,8 @@ int main(int argc, char **argv){
     int Option, addr_limit = 0;
     bool p_bool = 0, t_bool = 0;
     /* char ptr stores filename we want to write to */
+    char *file_name;
+    /* filename we will write to */
     char *res_filename;
 
     while((Option = getopt(argc, argv, "n:p:t")) != -1){
@@ -58,15 +60,26 @@ int main(int argc, char **argv){
             addr_limit = atoi(optarg);
         break;
         case 'p': /* produce map of pages */
-            res_filename = optarg;
-            FILE *fPtr;
-            /* if file does not exist then we exit */
-            if((fPtr = fopen(res_filename, "r"))){
-                fclose(fPtr);
+            file_name = optarg;
+            /* char ptr iterates over char array & finds any '.' char */
+            char *ext_check;
+            ext_check = strrchr(file_name, '.');
+            if(ext_check != NULL){
+                res_filename = file_name;
                 p_bool = 1;
             }
+            /* no extension found, so we add one */
             else{
-                exit(BADFLAG);
+                /* concatenate .odf extension to non-file string */
+                char *ext = ".odf";
+                /* provide sufficient size of char array */
+                /* +2 included for null terminators */
+                char *filestr;
+                filestr = new char[int(strlen(ext)+strlen(file_name)+2)];
+                strcpy(filestr, file_name);
+                strcat(filestr, ext);
+                res_filename = filestr;
+                p_bool = 1;
             }
         break;
         case 't': /* Show address translation */
@@ -181,9 +194,25 @@ int main(int argc, char **argv){
     /* write to specified file with ordered hex addresses and their frames */
     if(p_bool == 1){
         /* rather than file ptrs we use ofstream to output hex strings */
+        /* will write to .odf file if not specified */
         ofstream writeFile(res_filename);
         PageTableTraversal(pt, writeFile);
         writeFile.close();
     }
+
+    /* print out basic summary */
+    cout << "Page size: " << page_size << endl;
+    cout << "Number of levels: " << pt->LevelCount << endl;
+    cout << "Entries: ";
+    for(int i = 0; i < pt->LevelCount; i++){
+        cout << pt->EntryCount[i] << " ";
+    }
+    cout << endl;
+    cout << "Shifts: ";
+    for(int i = 0; i < pt->LevelCount; i++){
+        cout << pt->ShiftAry[i] << " ";
+    }
+    cout << endl;
+
     return 0;
 }

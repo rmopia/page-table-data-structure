@@ -51,7 +51,8 @@ unsigned int HexToDec(string hex_num){
 string BinToHex(string bin_num){
     string hex_str, byte;
     /* reads every 4 bits of binary and converts it to hex */
-	for (int i = 0; i < bin_num.length(); i += 4){
+    int i = 0;
+	while(i < bin_num.length()){
         /* gets ith bit and gets the substr in a group of 4 */
 		byte = bin_num.substr(i, 4);
 		if (byte.compare("0000")==0){ hex_str += "0"; }
@@ -70,6 +71,7 @@ string BinToHex(string bin_num){
 		else if (byte.compare("1101")==0){ hex_str += "D"; }
 		else if (byte.compare("1110")==0){ hex_str += "E"; }
 		else if (byte.compare("1111")==0){ hex_str += "F"; }
+		i += 4;
 	}
 	return hex_str;
 }

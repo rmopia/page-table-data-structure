@@ -52,7 +52,7 @@ Pagetable::Pagetable(int level_count, int level_bits[]){
     }
 }
 
-/* page traversal */
+/* page lookup that returns map object */
 Map *PageLookUp(Level *curr_level, unsigned int LogicalAddress){
     /* we find page number via logical address */
     unsigned int shift_amount =
@@ -93,7 +93,7 @@ Map *PageLookUp(Level *curr_level, unsigned int LogicalAddress){
     return NULL;
 }
 
-/* beginning of page traversal function */
+/* beginning of page lookup function */
 Map *PageLookUp(Pagetable *ptable, unsigned int LogicalAddress){
     return PageLookUp(ptable->RootNodePtr, LogicalAddress);
 }
